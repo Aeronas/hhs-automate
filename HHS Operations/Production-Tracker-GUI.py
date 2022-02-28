@@ -14,7 +14,7 @@ root.title('Main Window')
 root.geometry('275x175')
 
 
-# Command functions
+# Core functions
 def VerifyProjInfo(num, m, d):
     '''
     Verifies project number, day and month are entered correctly
