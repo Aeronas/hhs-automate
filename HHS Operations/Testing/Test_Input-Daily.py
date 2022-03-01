@@ -2,9 +2,9 @@
 import openpyxl as op
 
 # Open Project Tracker and Daily Input, load active sheets
-prt = op.load_workbook('Test_Reports/Test-ProjectTracker.xlsx',data_only=True)
+prt = op.load_workbook('Test_Reports/Test-ProjectTracker.xlsx', data_only=True)
 prt_ws = prt.active
-di = op.load_workbook('Test_Inputs/Test-DailyInput.xlsx',data_only=True)
+di = op.load_workbook('Test_Inputs/Test-DailyInput.xlsx', data_only=True)
 di_ws = di.active
 
 # Create Project Variables
@@ -14,7 +14,7 @@ hhs_num = di_ws['B1'].value  # HHS Project Number
 date = di_ws['D6'].value  # Date on input sheet
 proj_info = []  # Empty project info
 prod_data = []  # Empty data list
-day_total = di_ws['D98'].value # Daily Total (Dollars)
+day_total = di_ws['D98'].value  # Daily Total (Dollars)
 
 # Add project information data set
 for row in di_ws.rows:

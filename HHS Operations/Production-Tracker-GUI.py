@@ -21,8 +21,8 @@ def VerifyProjInfo(num, m, d):
     Returns 1 if they are and 0 if they are not
     '''
     if len(num) == 8:
-        if int(m) > 0 and < 13:
-            if int(d) > 0 and < 32:
+        if int(m) > 0 and int(m) < 13:
+            if int(d) > 0 and int(d) < 32:
                 return 1
             else:
                 return 0
@@ -30,6 +30,7 @@ def VerifyProjInfo(num, m, d):
             return 0
     else:
         return 0
+
 
 def NewInputWB():
     '''Create new entry workbook'''
@@ -48,18 +49,22 @@ def NewInputWB():
             break
         else:
             # Load entry template
-            new_wb = op.load_workbook('Templates/Template_DailyInput.xlsx.xlsx')
+            new_wb = op.load_workbook(
+                'Templates/Template_DailyInput.xlsx.xlsx')
             # Save new copy in reports
             new_wb.Save(f'Reports/History/{new_entry_name}.xlsx')
             # Open the new input copy
-            open_now = messagebox.askyesno('Daily entry file created, open now?')
+            open_now = messagebox.askyesno(
+                'Daily entry file created, open now?')
             if open_now:
-                os.system(f'start EXCEL.EXE Reports/History/{new_entry_name}.xlsx')
+                os.system(
+                    f'start EXCEL.EXE Reports/History/{new_entry_name}.xlsx')
             else:
                 break
     else:
         messagebox.showerror('Incorrect project info formats!')
         break
+
 
 def EnterDaysInput():
     '''Enter the new days data'''
@@ -68,12 +73,15 @@ def EnterDaysInput():
     global day
     global month
     # Load projects input file (completed)
-    entry_wb = op.load_workbook(f'Reports/History/{hhs_num}_{cus_job}_{month}-{day}.xlsx')
+    entry_wb = op.load_workbook(
+        f'Reports/History/{hhs_num}_{cus_job}_{month}-{day}.xlsx')
     # Load existing project tracker
-    proj_tracker = op.load_workbook(f'Reports/{hhs_num}_{cus_job}_Production-Tracker.xlsx')
+    proj_tracker = op.load_workbook(
+        f'Reports/{hhs_num}_{cus_job}_Production-Tracker.xlsx')
     # TODO Verify date column does not already exist (ask to copy over)
     # TODO Enter input wb data into new column
     # TODO Save project tracker changes, Close input wb
+
 
 def CreateNewProject():
     '''Create new project tracker'''
@@ -86,10 +94,12 @@ def CreateNewProject():
         new_proj_name = f'{hhs_num}_{cus_job}_Production-Tracker.xlsx'
         existing_projects = os.listdir('./Reports/')
         if new_proj_name not in existing_projects:
-            proj_template = op.load_workbook('Templates/Template_ProjectTracker.xlsx')
+            proj_template = op.load_workbook(
+                'Templates/Template_ProjectTracker.xlsx')
             # TODO Enter project information into new project wb
             proj_template.save(new_proj_name)
-            messagebox.showinfo(f'Project Tracker {new_proj_name} has been created.')
+            messagebox.showinfo(
+                f'Project Tracker {new_proj_name} has been created.')
         else:
             messagebox.showerror('Project already exists!')
             break
@@ -130,13 +140,12 @@ month = month_entry.get()  # TODO Verify proper format info
 make_wb_button = Button(root, text='Create New Report', command=NewInputWB)
 make_wb_button.grid(row=4, column=0, columnspan=2)
 
-enter_data_button = Button(root, text='Enter Daily Report', command=EnterDaysInput)
+enter_data_button = Button(
+    root, text='Enter Daily Report', command=EnterDaysInput)
 enter_data_button.grid(row=4, column=2, columnspan=2)
 
 new_proj_button = Button(root, text='Create Project', command=CreateNewProject)
 new_proj_button.grid(row=5, column=1, columnspan=2, pady=20)
-
-
 
 
 # Run main logic (Open root window)
