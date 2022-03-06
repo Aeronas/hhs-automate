@@ -14,6 +14,10 @@ root.geometry('275x175')
 
 
 # Core functions
+months = ['NONE', 'JAN', 'FEB', 'MAR', 'APR', 'MAY',
+          'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
+
+
 def VerifyProjInfo(num, m, d):
     '''
     Verifies project number, day and month are entered correctly.
@@ -29,6 +33,8 @@ def VerifyProjInfo(num, m, d):
     else:
         return 0
 
+# TODO Create master project tracker and update each daily input
+
 
 def NewInputWB():
     '''Creates new entry workbook'''
@@ -37,6 +43,7 @@ def NewInputWB():
     loc = loc_box.get()
     day = day_box.get()
     month = month_box.get()
+    # month_name = months[int(month)]  # TODO For future sheets
     # Verify inputs are in correct format
     if VerifyProjInfo(hhs_num, month, day):
         # New excel input file name
@@ -46,7 +53,7 @@ def NewInputWB():
         if new_entry_name in existing_reports:
             messagebox.showerror(
                 'Error', 'This date input file already exists!')
-            pass  # TODO Find correct break statement
+            pass
         else:
             # Load entry template and add project info
             new_wb = op.load_workbook(
@@ -59,26 +66,29 @@ def NewInputWB():
             new_wb.save(f'Reports/History/{new_entry_name}.xlsx')
             # Open the new input copy
             open_now = messagebox.askyesno(
-                'Daily entry file created, open it now?')
+                'Complete', 'Daily entry file created, open it now?')
             if open_now:
                 os.system(
                     f'start EXCEL.EXE Reports/History/{new_entry_name}.xlsx')
             else:
-                pass  # TODO Find correct break statement
+                pass
     else:
         messagebox.showerror('Error', 'Incorrect project info formats!')
-        pass  # TODO Find correct break statement
+        pass
 
 
+# TODO Need month total variable from tracker wb to update master
 def EnterDaysInput():
     '''Enters the new days data'''
     hhs_num = hhs_num_box.get()
     cus_job = cus_job_box.get()
     day = day_box.get()
     month = month_box.get()
+    # month_name = months[int(month)]  # TODO For future sheets
     # Load projects input file (completed)
     entry_wb = op.load_workbook(
         f'Reports/History/{hhs_num}_{cus_job}_{month}-{day}.xlsx')
+    # TODO Change active worksheet to proper month sheet
     entry_ws = entry_wb.active
     # Load existing project tracker
     proj_tracker = op.load_workbook(
@@ -105,6 +115,8 @@ def EnterDaysInput():
         'Complete', f'{hhs_num} input for {day}/{month} has been added!')
 
 
+# TODO Create project entry in master project tracker
+# TODO Add master tracking sheet and seperate month sheets
 def CreateNewProject():
     '''Creates new project tracker'''
     hhs_num = hhs_num_box.get()
@@ -133,7 +145,7 @@ def CreateNewProject():
         else:
             # Project exists error message
             messagebox.showerror('Error', 'Project already exists!')
-            pass  # TODO Find correct break statement
+            pass
     else:
         # Wrong format error message
         messagebox.showerror('Error', 'Verify project info formats!')

@@ -17,3 +17,8 @@
 `{hhs_num}_{cus_job}_{month}-{day}.xlsx`
 **Proj Tracker**
 `{hhs_num}_{cus_job}_Production-Tracker.xlsx`
+
+
+### TODO
+- Create master project tracker and add to functionality
+- Add master tracking sheet and seperate month sheets to projects
