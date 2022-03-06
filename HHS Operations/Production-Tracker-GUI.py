@@ -4,8 +4,7 @@ from tkinter import *
 from tkinter import messagebox
 import openpyxl as op
 '''
-{hhs_num}_{cus_job}_{month}-{day}.xlsx
-{hhs_num}_{cus_job}_Production-Tracker.xlsx
+GUI for input and tracking of project production data.
 '''
 
 # Create main window
@@ -17,8 +16,7 @@ root.geometry('275x175')
 # Core functions
 def VerifyProjInfo(num, m, d):
     '''
-    Verifies project number, day and month are entered correctly
-    Returns 1 if they are and 0 if they are not
+    Verifies project number, day and month are entered correctly.
     '''
     if len(num) == 8:
         if int(m) > 0 and int(m) < 13:
@@ -33,45 +31,51 @@ def VerifyProjInfo(num, m, d):
 
 
 def NewInputWB():
-    '''Create new entry workbook'''
-    global hhs_num
-    global cus_job
-    global day
-    global month
+    '''Creates new entry workbook'''
+    hhs_num = hhs_num_box.get()
+    cus_job = cus_job_box.get()
+    loc = loc_box.get()
+    day = day_box.get()
+    month = month_box.get()
     # Verify inputs are in correct format
     if VerifyProjInfo(hhs_num, month, day):
         # New excel input file name
-        new_entry_name = f'{hhs_num}_{cus_job}_{month}-{day}.xlsx'
+        new_entry_name = f'{hhs_num}_{cus_job}_{month}-{day}'
         existing_reports = os.listdir('./Reports/History/')
         # Verify todays entry does not exist
         if new_entry_name in existing_reports:
-            messagebox.showerror('This date input file already exists!')
-            break
+            messagebox.showerror(
+                'Error', 'This date input file already exists!')
+            pass  # TODO Find correct break statement
         else:
-            # Load entry template
+            # Load entry template and add project info
             new_wb = op.load_workbook(
-                'Templates/Template_DailyInput.xlsx.xlsx')
+                'Templates/Template_DailyInput.xlsx')
+            new_ws = new_wb.active
+            new_ws['B1'] = hhs_num
+            new_ws['B2'] = cus_job
+            new_ws['B3'] = loc
             # Save new copy in reports
-            new_wb.Save(f'Reports/History/{new_entry_name}.xlsx')
+            new_wb.save(f'Reports/History/{new_entry_name}.xlsx')
             # Open the new input copy
             open_now = messagebox.askyesno(
-                'Daily entry file created, open now?')
+                'Daily entry file created, open it now?')
             if open_now:
                 os.system(
                     f'start EXCEL.EXE Reports/History/{new_entry_name}.xlsx')
             else:
-                break
+                pass  # TODO Find correct break statement
     else:
-        messagebox.showerror('Incorrect project info formats!')
-        break
+        messagebox.showerror('Error', 'Incorrect project info formats!')
+        pass  # TODO Find correct break statement
 
 
 def EnterDaysInput():
-    '''Enter the new days data'''
-    global hhs_num
-    global cus_job
-    global day
-    global month
+    '''Enters the new days data'''
+    hhs_num = hhs_num_box.get()
+    cus_job = cus_job_box.get()
+    day = day_box.get()
+    month = month_box.get()
     # Load projects input file (completed)
     entry_wb = op.load_workbook(
         f'Reports/History/{hhs_num}_{cus_job}_{month}-{day}.xlsx')
@@ -84,35 +88,33 @@ def EnterDaysInput():
     # Create data variables
     ncn = (prt_ws.max_column + 1)  # Next open column number
     ncl = op.utils.get_column_letter(ncn)  # Next column letter
-    proj_info = []  # Empty project info
     prod_data = []  # Empty data list
     day_total = entry_ws['D98'].value  # Daily Total (Dollars)
-    # Add input info to data sets
-    for row in entry_ws.rows:
-        proj_info.append(row[1].value)
-    proj_info = proj_info[:3]
+    # Gather input wb data into lists
     for row in entry_ws.rows:
         prod_data.append(row[3].value)
     prod_data = prod_data[4:-20]
-    # Enter input wb data into new column
+    # Enter data from lists to project tracker
     for i, item in enumerate(prod_data):
         track_ws[f'{ncl}{i+5}'] = item
+    track_ws['D98'] = day_total
     # Save project tracker changes, Close input wb
     proj_tracker.save(f'Reports/{hhs_num}_{cus_job}_Production-Tracker.xlsx')
     # Notify completion
-    messagebox.showinfo(f'{hhs_num} input for {day}/{month} has been added!')
+    messagebox.showinfo(
+        'Complete', f'{hhs_num} input for {day}/{month} has been added!')
 
 
 def CreateNewProject():
-    '''Create new project tracker'''
-    global hhs_num
-    global cus_job
-    global day
-    global month
-    global loc
+    '''Creates new project tracker'''
+    hhs_num = hhs_num_box.get()
+    cus_job = cus_job_box.get()
+    loc = loc_box.get()
+    day = day_box.get()
+    month = month_box.get()
     # Verify project format and does not already exist
     if VerifyProjInfo(hhs_num, month, day):
-        new_proj_name = f'{hhs_num}_{cus_job}_Production-Tracker.xlsx'
+        new_proj_name = f'{hhs_num}_{cus_job}_Production-Tracker'
         existing_projects = os.listdir('./Reports/')
         if new_proj_name not in existing_projects:
             proj_template = op.load_workbook(
@@ -124,47 +126,53 @@ def CreateNewProject():
             temp_ws['B3'] = loc
             # TODO Add question to enter a hub number for Ziply
             # Save new project tracker and notify completetion
-            proj_template.save(new_proj_name)
+            proj_template.save(f'Reports/{new_proj_name}.xlsx')
             messagebox.showinfo(
+                'Complete',
                 f'Project Tracker {new_proj_name} has been created.')
         else:
             # Project exists error message
-            messagebox.showerror('Project already exists!')
-            break
+            messagebox.showerror('Error', 'Project already exists!')
+            pass  # TODO Find correct break statement
     else:
         # Wrong format error message
-        messagebox.showerror('Verify project info formats!')
+        messagebox.showerror('Error', 'Verify project info formats!')
 
 
 # Input names and boxes
 hhs_num_label = Label(root, text='HHS Project Number:')
 hhs_num_label.grid(row=0, column=0, columnspan=2)
-hhs_num_entry = Entry(root, width=23)
+hhs_num_box = StringVar()
+hhs_num_entry = Entry(root, width=23, textvariable=hhs_num_box)
 hhs_num_entry.grid(row=0, column=2, columnspan=2)
 
 cus_job_label = Label(root, text='Customer Job Number:')
 cus_job_label.grid(row=1, column=0, columnspan=2)
-cus_job_entry = Entry(root, width=23)
+cus_job_box = StringVar()
+cus_job_entry = Entry(root, width=23, textvariable=cus_job_box)
 cus_job_entry.grid(row=1, column=2, columnspan=2)
 
-loc_label = Label(root, text='Location:')  # TODO Make a dropdown menu?
+loc_label = Label(root, text='Location:')
 loc_label.grid(row=2, column=0, columnspan=2)
-loc_entry = Entry(root, width=23)
+loc_box = StringVar()
+loc_entry = Entry(root, width=23, textvariable=loc_box)
 loc_entry.grid(row=2, column=2, columnspan=2)
 
 date_label = Label(root, text='Date: [Day] [Month]')
 date_label.grid(row=3, column=0, columnspan=2)
-day_entry = Entry(root, width=11)  # TODO Make a dropdown menu?
+day_box = IntVar()
+day_entry = Entry(root, width=11, textvariable=day_box)
 day_entry.grid(row=3, column=2, pady=6)
-month_entry = Entry(root, width=11)  # TODO Make a dropdown menu?
+month_box = IntVar()
+month_entry = Entry(root, width=11, textvariable=month_box)
 month_entry.grid(row=3, column=3, pady=6)
 
 # Get all project information from GUI
-hhs_num = hhs_num_entry.get()  # TODO Verify proper format info
-cus_job = cus_job_entry.get()  # TODO Verify proper format info
-loc = loc_entry.get()  # TODO Verify proper format info
-day = day_entry.get()  # TODO Verify proper format info
-month = month_entry.get()  # TODO Verify proper format info
+# hhs_num = hhs_num_box.get()  # TODO Verify proper format info
+# cus_job = cus_job_box.get()  # TODO Verify proper format info
+# loc = loc_box.get()  # TODO Verify proper format info
+# day = day_box.get()  # TODO Verify proper format info
+# month = month_box.get()  # TODO Verify proper format info
 
 # Action Buttons
 make_wb_button = Button(root, text='Create New Report', command=NewInputWB)

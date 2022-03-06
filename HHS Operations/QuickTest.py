@@ -1,36 +1,35 @@
 
-x = 0
-y = 2
-z = 1
+# x = 0
+# y = 2
+# z = 1
 
-a = 63-00001
-b = 10
-c = 20
+a = '63-00001'
+b = 14
+c = 3
 
-def testthis():
+# def testthis():
 
-    if x:
-        print('It is X!')
-        if z:
-            print('It is Z!')
-        else:
-            print('It is not Z!')
-    else:
-        print('It is not X!')
-
-
-    print('This is the END!')
+#     if x:
+#         print('It is X!')
+#         if z:
+#             print('It is Z!')
+#         else:
+#             print('It is not Z!')
+#     else:
+#         print('It is not X!')
 
 
-testthis()
+#     print('This is the END!')
 
+
+# testthis()
 
 
 def VerifyProjInfo(num, m, d):
 
     if len(num) == 8:
-        if int(m) > 0 and < 13:
-            if int(d) > 0 and < 32:
+        if int(m) > 0 and int(m) < 13:
+            if int(d) > 0 and int(d) < 32:
                 return 1
             else:
                 return 0
@@ -40,4 +39,4 @@ def VerifyProjInfo(num, m, d):
         return 0
 
 
-VerifyProjInfo(a, b, c)
+print(bool(VerifyProjInfo(a, b, c)))
