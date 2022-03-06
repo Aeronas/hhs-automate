@@ -10,7 +10,7 @@ di_ws = di.active
 # Create Project Variables
 ncn = (prt_ws.max_column + 1)  # Next open column number
 ncl = op.utils.get_column_letter(ncn)
-hhs_num = di_ws['B1'].value  # HHS Project Number
+hhs_po = di_ws['B1'].value  # HHS Project Number
 date = di_ws['D6'].value  # Date on input sheet
 proj_info = []  # Empty project info
 prod_data = []  # Empty data list
@@ -29,11 +29,11 @@ prod_data = prod_data[5:-20]
 
 # Add production data to new column in Project Tracker
 for i, item in enumerate(prod_data):
-    prt_ws[f'{ncl}{i+6}'] = item
+    prt_ws[f'{ncl}{i+5}'] = item
 
 # TESTING AREA
 print(f'New Col Number: {ncn} Letter: {ncl}')
-print(f'HHS Proj Number: {hhs_num}')
+print(f'HHS Proj Number: {hhs_po}')
 print(f'Infin Number: {proj_info[1]}')
 print(f'Location: {proj_info[2]}')
 print(f'Hub Number: {proj_info[-1]}')
@@ -44,4 +44,4 @@ print(f'Day Total: {day_total}')
 
 # Save Project Tracker
 prt.save('Test_Reports/Test-ProjectTracker.xlsx')
-di.save(f'Test_Reports/Test_History/{hhs_num}-{date}.xlsx')
+di.save(f'Test_Reports/Test_History/{hhs_po}-{date}.xlsx')
