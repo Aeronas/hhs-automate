@@ -96,7 +96,7 @@ def EnterDaysInput():
     track_ws = proj_tracker.active
     # TODO Verify date column does not already exist (ask to copy over)
     # Create data variables
-    ncn = (prt_ws.max_column + 1)  # Next open column number
+    ncn = (track_ws.max_column + 1)  # Next open column number
     ncl = op.utils.get_column_letter(ncn)  # Next column letter
     prod_data = []  # Empty data list
     day_total = entry_ws['D98'].value  # Daily Total (Dollars)
@@ -112,7 +112,7 @@ def EnterDaysInput():
     proj_tracker.save(f'Reports/{hhs_num}_{cus_job}_Production-Tracker.xlsx')
     # Notify completion
     messagebox.showinfo(
-        'Complete', f'{hhs_num} input for {day}/{month} has been added!')
+        'Complete', f'{hhs_num} input for {month}/{day} has been added!')
 
 
 # TODO Create project entry in master project tracker
@@ -170,14 +170,14 @@ loc_box = StringVar()
 loc_entry = Entry(root, width=23, textvariable=loc_box)
 loc_entry.grid(row=2, column=2, columnspan=2)
 
-date_label = Label(root, text='Date: [Day] [Month]')
+date_label = Label(root, text='Date: [Month] [Day]')
 date_label.grid(row=3, column=0, columnspan=2)
 day_box = IntVar()
 day_entry = Entry(root, width=11, textvariable=day_box)
-day_entry.grid(row=3, column=2, pady=6)
+day_entry.grid(row=3, column=3, pady=6)
 month_box = IntVar()
 month_entry = Entry(root, width=11, textvariable=month_box)
-month_entry.grid(row=3, column=3, pady=6)
+month_entry.grid(row=3, column=2, pady=6)
 
 # Get all project information from GUI
 # hhs_num = hhs_num_box.get()  # TODO Verify proper format info
