@@ -172,12 +172,12 @@ loc_entry.grid(row=2, column=2, columnspan=2)
 
 date_label = Label(root, text='Date: [Month] [Day]')
 date_label.grid(row=3, column=0, columnspan=2)
-day_box = IntVar()
-day_entry = Entry(root, width=11, textvariable=day_box)
-day_entry.grid(row=3, column=3, pady=6)
 month_box = IntVar()
 month_entry = Entry(root, width=11, textvariable=month_box)
 month_entry.grid(row=3, column=2, pady=6)
+day_box = IntVar()
+day_entry = Entry(root, width=11, textvariable=day_box)
+day_entry.grid(row=3, column=3, pady=6)
 
 # Get all project information from GUI
 # hhs_num = hhs_num_box.get()  # TODO Verify proper format info
