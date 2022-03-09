@@ -9,8 +9,9 @@ GUI for input and tracking of project production data.
 
 # Create main window
 root = Tk()
-root.title('Main Window')
+root.title('Tracker 1.0')
 root.geometry('275x175')
+root.bitmapimage('Templates/Images/chart-5_111421.ico')
 
 
 # Core functions

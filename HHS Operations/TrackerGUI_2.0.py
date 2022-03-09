@@ -9,8 +9,9 @@ GUI for input and tracking of project production data.
 
 # Create main window
 root = Tk()
-root.title('Main Window')
+root.title('Tracker 2.0')
 root.geometry('275x175')
+root.bitmapimage('Templates/Images/chart-5_111421.ico')
 
 
 # Core functions
@@ -57,7 +58,7 @@ def NewInputWB():
         else:
             # Load entry template and add project info
             new_wb = op.load_workbook(
-                'Templates/Template_DailyInput.xlsx')
+                'Templates/Template_DailyInput_2.0.xlsx')
             new_ws = new_wb.active
             new_ws['B1'] = hhs_num
             new_ws['B2'] = cus_job
@@ -130,7 +131,7 @@ def CreateNewProject():
         existing_projects = os.listdir('./Reports/')
         if new_proj_name not in existing_projects:
             proj_template = op.load_workbook(
-                'Templates/Template_ProjectTracker.xlsx')
+                'Templates/Template_ProjectTracker_2.0.xlsx')
             temp_ws = proj_template.active
             # Enter project information into new project wb
             temp_ws['B1'] = hhs_num
