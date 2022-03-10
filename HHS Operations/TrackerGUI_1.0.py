@@ -11,7 +11,6 @@ GUI for input and tracking of project production data.
 root = Tk()
 root.title('Tracker 1.0')
 root.geometry('275x175')
-root.bitmapimage('Templates/Images/chart-5_111421.ico')
 
 
 # Core functions
