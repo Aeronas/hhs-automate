@@ -19,9 +19,7 @@ months = ['NONE', 'JAN', 'FEB', 'MAR', 'APR', 'MAY',
 
 
 def VerifyProjInfo(num, m, d):
-    '''
-    Verifies project number, day and month are entered correctly.
-    '''
+    """Verify project number, day and month are entered correctly."""
     if len(num) == 8 and str(num[2]) == '-':
         if int(m) > 0 and int(m) < 13:
             if int(d) > 0 and int(d) < 32:
@@ -37,7 +35,7 @@ def VerifyProjInfo(num, m, d):
 
 
 def NewInputWB():
-    '''Creates new entry workbook'''
+    """Create new entry workbook."""
     hhs_num = hhs_num_box.get()
     cus_job = cus_job_box.get()
     loc = loc_box.get()
@@ -62,14 +60,16 @@ def NewInputWB():
             new_ws['B1'] = hhs_num
             new_ws['B2'] = cus_job
             new_ws['B3'] = loc
+            new_ws[f'D5'] = months[int(month)]
+            new_ws[f'D6'] = day
             # Save new copy in reports
             new_wb.save(f'Reports/History/{new_entry_name}.xlsx')
             # Open the new input copy
             open_now = messagebox.askyesno(
                 'Complete', 'Daily entry file created, open it now?')
             if open_now:
-                os.system(
-                    f'start EXCEL.EXE Reports/History/{new_entry_name}.xlsx')
+                open_name = f'Reports/History/{new_entry_name}.xlsx'
+                os.system(f'start EXCEL.EXE {open_name}')
             else:
                 pass
     else:
@@ -85,9 +85,10 @@ def EnterDaysInput():
     day = day_box.get()
     month = month_box.get()
     # month_name = months[int(month)]  # TODO For future sheets
+    entry_file = f'{hhs_num}_{cus_job}_{month}-{day}.xlsx'
     # Load projects input file (completed)
     entry_wb = op.load_workbook(
-        f'Reports/History/{hhs_num}_{cus_job}_{month}-{day}.xlsx')
+        f'Reports/History/{entry_file}', data_only=True)
     # TODO Change active worksheet to proper month sheet
     entry_ws = entry_wb.active
     # Load existing project tracker
@@ -107,7 +108,7 @@ def EnterDaysInput():
     # Enter data from lists to project tracker
     for i, item in enumerate(prod_data):
         track_ws[f'{ncl}{i+5}'] = item
-    track_ws['D98'] = day_total
+    track_ws[f'{ncl}98'] = day_total
     # Save project tracker changes, Close input wb
     proj_tracker.save(f'Reports/{hhs_num}_{cus_job}_Production-Tracker.xlsx')
     # Notify completion
