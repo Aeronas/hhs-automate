@@ -3,10 +3,8 @@
 ## Instructions:
 
 1. Download and install Python from [Here](https://www.python.org/downloads/)
-2. Open command line and navigate to desired folder to download
-3. Type the command:
-    'git clone https://github.com/Aeronas/hhs-automate.git'
-4. Navigate into the folder containing the file "TrackerGUI_1.0.py"
+2. Download the ZIP file for the hhs-automate repository and unpack
+4. Navigate into the folder containing the file "TrackerGUI_1.0.py" in CMD
 5. Type the commands:
     'pip install pyinstaller'
     'pyinstaller --onefile -w "TrackerGUI_1.0"'
@@ -43,3 +41,6 @@ You now have an excicutable file for the production tracker inside the new folde
 - Create master project tracker and add to functionality
 - Add master tracking sheet and seperate month sheets to projects
 - Create sheet copier with font/boarders as well to other workbooks
+- Add function to open already created daily wb if exists already
+- Add employee list to tracker and input
+- Add completion % tracker to workbooks
