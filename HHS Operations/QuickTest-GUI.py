@@ -17,12 +17,12 @@ def PrintEntry():
         Label(root, text='Nope').grid(row=3, column=0, columnspan=2)
 
 
-
 label = Label(root, text='Entry Box').grid(row=0, column=0)
 entry_in = StringVar()
 entry_box = Entry(root, width=20, textvariable=entry_in).grid(row=0, column=1)
 button = Button(root, text='Print It', command=PrintEntry).grid(
     row=1, column=0, columnspan=2)
+quit_button = Button(root, text='Exit').grid(row=7, column=0, columnspan=4)
 
 
 # Run main logic (Open root window)

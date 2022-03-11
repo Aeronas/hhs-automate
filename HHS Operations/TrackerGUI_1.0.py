@@ -10,7 +10,7 @@ GUI for input and tracking of project production data.
 # Create main window
 root = Tk()
 root.title('Tracker 1.0')
-root.geometry('275x175')
+root.geometry('275x225')
 
 
 # Core functions
@@ -197,6 +197,9 @@ enter_data_button.grid(row=4, column=2, columnspan=2)
 
 new_proj_button = Button(root, text='Create Project', command=CreateNewProject)
 new_proj_button.grid(row=5, column=1, columnspan=2, pady=20)
+
+quit_button = Button(root, text='Close', command=quit)
+quit_button.grid(row=7, column=1, columnspan=2)
 
 
 # Run main logic (Open root window)
