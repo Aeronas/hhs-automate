@@ -16,6 +16,10 @@ root.geometry('275x225')
 # Core functions
 months = ['NONE', 'JAN', 'FEB', 'MAR', 'APR', 'MAY',
           'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
+thin = Side(border_style="thin", color="000000")
+black_border = Border(top=thin, left=thin, right=thin, bottom=thin)
+align = Alignment(horizontal="center", vertical="center")
+bold = Font(name='Calibri', bold=True)
 
 
 def VerifyProjInfo(num, m, d):
@@ -99,16 +103,28 @@ def EnterDaysInput():
     # Create data variables
     ncn = (track_ws.max_column + 1)  # Next open column number
     ncl = op.utils.get_column_letter(ncn)  # Next column letter
-    prod_data = []  # Empty data list
-    day_total = entry_ws['D98'].value  # Daily Total (Dollars)
+    prod_data, prod_cost = [], []  # Empty data lists
     # Gather input wb data into lists
     for row in entry_ws.rows:
         prod_data.append(row[3].value)
     prod_data = prod_data[4:-20]
+    # Combine and sum costs for day total
+    data_set = entry_ws['C8:D96']
+    for x, y in data_set:
+        if y.value is not None:
+            prod_cost.append(int(x.value) * int(y.value))
+    day_total = '$' + str(sum(prod_cost))
     # Enter data from lists to project tracker
     for i, item in enumerate(prod_data):
         track_ws[f'{ncl}{i+5}'] = item
     track_ws[f'{ncl}98'] = day_total
+    track_ws[f'{ncl}5'].value = months[month]
+    track_ws[f'{ncl}5'].font = bold
+    track_ws[f'{ncl}6'].font = bold
+    track_ws[f'{ncl}7'].font = bold
+    track_ws[f'{ncl}98'] = day_total
+    track_ws[f'{ncl}98'].font = bold
+
     # Save project tracker changes, Close input wb
     proj_tracker.save(f'Reports/{hhs_num}_{cus_job}_Production-Tracker.xlsx')
     # Notify completion

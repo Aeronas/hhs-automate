@@ -3,6 +3,7 @@ import os
 from tkinter import *
 from tkinter import messagebox
 import openpyxl as op
+from openpyxl.styles import Alignment, Border, Side, Font
 '''
 GUI for input and tracking of project production data.
 '''
@@ -16,6 +17,10 @@ root.geometry('275x225')
 # Core functions
 months = ['NONE', 'JAN', 'FEB', 'MAR', 'APR', 'MAY',
           'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
+thin = Side(border_style="thin", color="000000")
+black_border = Border(top=thin, left=thin, right=thin, bottom=thin)
+align = Alignment(horizontal="center", vertical="center")
+bold = Font(name='Calibri', bold=True)
 
 
 def VerifyProjInfo(num, m, d):
@@ -85,7 +90,7 @@ def EnterDaysInput():
     entry_file = f'{hhs_num}_{cus_job}_{month}-{day}.xlsx'
     # Load projects input file (completed)
     entry_wb = op.load_workbook(
-        f'Reports/History/{entry_file}', data_only=True)
+        f'Reports/History/{entry_file}')
     # M0NTH$ TODO Change active worksheet to proper month sheet
     entry_ws = entry_wb.active
     # Load existing project tracker
@@ -97,22 +102,27 @@ def EnterDaysInput():
     ncn = (track_ws.max_column + 1)  # Next open column number
     ncl = op.utils.get_column_letter(ncn)  # Next column letter
     prod_data, prod_cost = [], []  # Empty data lists
-    day_total = 0
     # Gather input wb data into lists
     for row in entry_ws.rows:
         prod_data.append(row[3].value)
     prod_data = prod_data[4:-20]
-    for row in entry_ws.rows:
-        prod_cost.append(row[2].value)
-    prod_cost = prod_cost[4:-20]
-    # Get sum of all costs as int value
-    find_total = zip(prod_cost, day_total)
-    for cost, item in find_total:
-        day_total += int(cost) * int(item)
+    # Gather totals for the day and day's total
+    data_set = entry_ws['C8:D96']
+    for x, y in data_set:
+        if y.value is not None:
+            prod_cost.append(int(x.value) * int(y.value))
+    day_total = '$' + str(sum(prod_cost))
     # Enter data from lists to project tracker
     for i, item in enumerate(prod_data):
         track_ws[f'{ncl}{i+5}'] = item
+        track_ws[f'{ncl}{i+5}'].alignment = align
+        track_ws[f'{ncl}{i+5}'].border = black_border
+    track_ws[f'{ncl}5'].value = months[month]
+    track_ws[f'{ncl}5'].font = bold
+    track_ws[f'{ncl}6'].font = bold
+    track_ws[f'{ncl}7'].font = bold
     track_ws[f'{ncl}98'] = day_total
+    track_ws[f'{ncl}98'].font = bold
     # Save project tracker changes, Close input wb
     proj_tracker.save(f'Reports/{hhs_num}_{cus_job}_Production-Tracker.xlsx')
     # Notify completion
