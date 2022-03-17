@@ -3,6 +3,7 @@ import os
 from tkinter import *
 from tkinter import messagebox
 import openpyxl as op
+from openpyxl.styles import Alignment, Border, Font, Side
 '''
 GUI for input and tracking of project production data.
 '''

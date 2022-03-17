@@ -35,6 +35,8 @@ You now have an excicutable file for the production tracker inside the new folde
 `{hhs_num}_{cus_job}_{month}-{day}.xlsx`
 **Proj Tracker**
 `{hhs_num}_{cus_job}_Production-Tracker.xlsx`
+**Master Tracker**
+`#MasterRevenueTracker`
 
 
 ### TODO
